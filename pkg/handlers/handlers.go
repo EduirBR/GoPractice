@@ -11,12 +11,10 @@ import (
 func GetRoutes() http.Handler {
 	routes := mux.NewRouter()
 	cors.EnableCORS(routes)
-
+	routes.HandleFunc("/", welcome).Methods(http.MethodGet)
 	routes.HandleFunc("/persons", getPerson).Methods(http.MethodGet)
 	routes.HandleFunc("/persons", postPerson).Methods(http.MethodPost)
-	routes.HandleFunc("", deletePerson).Methods(http.MethodDelete)
-	routes.HandleFunc("", patchPerson).Methods(http.MethodPatch)
-	routes.HandleFunc("", putPerson).Methods(http.MethodPut)
+	routes.HandleFunc("/api/report", rephandler).Methods(http.MethodGet)
 
 	return routes
 }

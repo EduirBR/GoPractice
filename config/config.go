@@ -1,7 +1,7 @@
 package config
 
 import (
-	"io/ioutil"
+	"os"
 
 	"gopkg.in/yaml.v2"
 )
@@ -13,12 +13,12 @@ type Settings struct {
 	DBName        string `yaml:"DBPOSTGRES"`
 	User          string `yaml:"USUPOSTGRES"`
 	Password      string `yaml:"PASSPOSTGRES"`
+	FileBaseName  string `yaml:"FILEBASENAME"`
+	Creator       string `yaml:"CREATOR"`
 }
 
-//GetConfig carga las configuraciones del archivo Config.yaml
-//retorna las configuraciones contenidas en el archivo y el err si existe
 func GetConfig() (conf *Settings, err error) {
-	data, err := ioutil.ReadFile("../config/config.yaml")
+	data, err := os.ReadFile("../config/config.yaml")
 	if err != nil {
 		return
 	}

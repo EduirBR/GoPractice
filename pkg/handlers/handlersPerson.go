@@ -3,11 +3,26 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
+	"os"
 	"practice/pkg/dbconect"
 	"practice/pkg/models"
+	"practice/pkg/services"
 )
 
+func welcome(rw http.ResponseWriter, r *http.Request) {
+	rw.Header().Set("Content-Type", "application/json")
+
+	endpoint := fmt.Sprintln(`
+	Estos son los endpoints de la API
+	"/" inicio metodo GET
+	"/persons"  agregar registro metodo POST
+	"/persons"  optener registros metodo GET
+	"/api/report" optener registros de personas en excel metodo GET`)
+	fmt.Fprintln(rw, endpoint)
+
+}
 func postPerson(rw http.ResponseWriter, r *http.Request) {
 	newPerson := models.Person{}
 	json.NewDecoder(r.Body).Decode(&newPerson)
@@ -37,13 +52,17 @@ func getPerson(rw http.ResponseWriter, r *http.Request) {
 	SendResponse(rw, http.StatusOK, data)
 }
 
-func deletePerson(rw http.ResponseWriter, r *http.Request) {
+func rephandler(rw http.ResponseWriter, r *http.Request) {
+	file_name := services.Repots()
+	file, err := os.ReadFile(file_name)
 
-}
-func putPerson(rw http.ResponseWriter, r *http.Request) {
+	if err != nil {
 
-}
-func patchPerson(rw http.ResponseWriter, r *http.Request) {
+		log.Fatal(err)
+	}
+
+	rw.Header().Set("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+	rw.Write(file)
 
 }
 
